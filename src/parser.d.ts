@@ -15,6 +15,7 @@ type X2jOptions = {
   tagValueProcessor: (tagValue: string, tagName: string) => string;
   attrValueProcessor: (attrValue: string, attrName: string) => string;
   stopNodes: string[];
+  doNotParseAttributeNames: string[];
 };
 type X2jOptionsOptional = Partial<X2jOptions>;
 type validationOptions = {

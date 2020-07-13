@@ -38,7 +38,8 @@ const defaultOptions = {
   attrValueProcessor: function(a, attrName) {
     return a;
   },
-  stopNodes: []
+  stopNodes: [],
+  doNotParseAttributeNames: []
   //decodeStrict: false,
 };
 
@@ -60,7 +61,8 @@ const props = [
   'tagValueProcessor',
   'attrValueProcessor',
   'parseTrueNumberOnly',
-  'stopNodes'
+  'stopNodes',
+  'doNotParseAttributeNames'
 ];
 exports.props = props;
 
@@ -145,11 +147,15 @@ function buildAttributesMap(attrStr, options) {
             matches[i][4] = matches[i][4].trim();
           }
           matches[i][4] = options.attrValueProcessor(matches[i][4], attrName);
-          attrs[options.attributeNamePrefix + attrName] = parseValue(
-            matches[i][4],
-            options.parseAttributeValue,
-            options.parseTrueNumberOnly
-          );
+          if (options.doNotParseAttributeNames.length && options.doNotParseAttributeNames.includes(attrName)) {
+            attrs[options.attributeNamePrefix + attrName] = matches[i][4];
+          } else {
+              attrs[options.attributeNamePrefix + attrName] = parseValue(
+                matches[i][4],
+                options.parseAttributeValue,
+                options.parseTrueNumberOnly
+              );
+          }
         } else if (options.allowBooleanAttributes) {
           attrs[options.attributeNamePrefix + attrName] = true;
         }
